@@ -1,0 +1,8 @@
+---
+- name: Install Docker on frontend, backend, and database
+  hosts: 
+    - frontend
+    - backend
+    - database
+  roles:
+    - ../roles/docker

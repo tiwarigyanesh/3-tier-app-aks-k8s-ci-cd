@@ -1,0 +1,4 @@
+# inventory/host_vars/backend.yml
+ansible_host: "{{ backend_ip_address }}"
+ansible_user: ubuntu
+ansible_connection: ssh
