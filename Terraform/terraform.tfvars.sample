@@ -1,0 +1,9 @@
+aws_region = ""
+
+vpc_cidr = ""
+
+subnets = {
+  frontend = ""
+  backend  = ""
+  database = ""
+}
