@@ -1,0 +1,4 @@
+# inventory/host_vars/database.yml
+ansible_host: "{{ database_ip_address }}"
+ansible_user: ubuntu
+ansible_connection: ssh
