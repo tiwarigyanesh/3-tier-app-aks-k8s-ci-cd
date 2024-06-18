@@ -69,3 +69,11 @@ variable "database_security_group_name" {
 variable "vpc_name" {
   type = string
 }
+
+variable "destination_cidr_block" {
+  type = string
+}
+
+variable "gateway_name" {
+  type = string
+}

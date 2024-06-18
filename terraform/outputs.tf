@@ -17,3 +17,13 @@ output "instance_ids" {
 output "public_ips" {
   value = module.ec2_instances.public_ips
 }
+
+output "route_table_id" {
+  value = module.route_tables.main_route_table_id
+}
+
+output "subnet_associations_ids" {
+  value = module.route_tables.subnet_associations_ids
+}
+
+
