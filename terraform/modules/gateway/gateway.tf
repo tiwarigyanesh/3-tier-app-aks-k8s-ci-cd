@@ -1,6 +1,6 @@
 resource "aws_internet_gateway" "gateway" {
   vpc_id = var.vpc_id
   tags = {
-    Name = "gateway"
+    Name = var.gateway_name
   }
 }
