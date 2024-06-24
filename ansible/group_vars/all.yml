@@ -1,4 +1,5 @@
-# inventory/group_vars/all.yml
-frontend_ip_address: 16.170.239.33
-backend_ip_address: 16.171.17.218
-database_ip_address: 16.171.182.156
+---
+frontend_ip_address: 51.20.98.60
+backend_ip_address: 16.171.193.25
+database_ip_address: 13.53.186.18
+
