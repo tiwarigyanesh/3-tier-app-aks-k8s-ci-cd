@@ -26,8 +26,11 @@ jobs:
       with:
         dotnet-version: '6.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Restore dependencies for API project
+      run: dotnet restore ./api
+
+    - name: Restore dependencies for UI project
+      run: dotnet restore ./ui  
 
     - name: Build API project
       run: dotnet build --configuration Release --no-restore ./api
@@ -35,8 +38,12 @@ jobs:
     - name: Build UI project
       run: dotnet build --configuration Release --no-restore ./ui
 
-    - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+    - name: Run tests for API project
+      run: dotnet test --no-build --verbosity normal ./api
+
+    - name: Run tests for UI project
+      run: dotnet test --no-build --verbosity normal ./ui
+
 
     - name: Set up SonarQube scanner
       run: |
