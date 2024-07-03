@@ -27,10 +27,10 @@ jobs:
         dotnet-version: '6.0.x'
 
     - name: Restore dependencies for API project
-      run: dotnet restore ./api
+      run: dotnet restore ./api/
 
     - name: Restore dependencies for UI project
-      run: dotnet restore ./ui  
+      run: dotnet restore ./ui/
 
     - name: Build API project
       run: dotnet build --configuration Release --no-restore ./api
@@ -44,7 +44,6 @@ jobs:
     - name: Run tests for UI project
       run: dotnet test --no-build --verbosity normal ./ui
 
-
     - name: Set up SonarQube scanner
       run: |
         dotnet tool install --global dotnet-sonarscanner
@@ -56,7 +55,8 @@ jobs:
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
       run: |
         dotnet sonarscanner begin /k:"3-tier-ci-cd" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-        dotnet build
+        dotnet build ./api
+        dotnet build ./ui
         dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"  
 
   dockerize:
