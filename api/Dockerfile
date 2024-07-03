@@ -1,19 +1,30 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+
+COPY Basic3TierAPI/Basic3TierAPI.csproj Basic3TierAPI/
+RUN dotnet restore "Basic3TierAPI/Basic3TierAPI.csproj"
 
 COPY Basic3Tier.Core/Basic3Tier.Core.csproj Basic3Tier.Core/
 COPY Basic3Tier.Infrastructure/Basic3Tier.Infrastructure.csproj Basic3Tier.Infrastructure/
-COPY Basic3TierAPI/Basic3TierAPI.csproj Basic3TierAPI/
-COPY Tests/Basic3Tier.Core.Tests/Basic3Tier.Core.Tests.csproj Tests/Basic3Tier.Core.Tests/
-COPY Tests/Basic3Tier.Infrastructure.Tests/Basic3Tier.Infrastructure.Tests.csproj Tests/Basic3Tier.Infrastructure.Tests/
-COPY Tests/Basic3TierAPI.Tests/Basic3TierAPI.Tests.csproj Tests/Basic3TierAPI.Tests/
 
-RUN dotnet restore Basic3TierAPI/Basic3TierAPI.csproj
+RUN dotnet restore "Basic3Tier.Core/Basic3Tier.Core.csproj"
+RUN dotnet restore "Basic3Tier.Infrastructure/Basic3Tier.Infrastructure.csproj"
 
 COPY . .
-RUN dotnet publish Basic3TierAPI/Basic3TierAPI.csproj -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+WORKDIR "/src/Basic3TierAPI"
+RUN dotnet build -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
 WORKDIR /app
-COPY --from=build /app/out .
+COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "Basic3TierAPI.dll"]
