@@ -24,8 +24,9 @@ module "subnets" {
 }
 
 module "gateway" {
-  source = "./modules/gateway"
-  vpc_id = module.vpc.vpc_id
+  source       = "./modules/gateway"
+  vpc_id       = module.vpc.vpc_id
+  gateway_name = var.gateway_name
 }
 
 module "security_group" {
@@ -49,4 +50,13 @@ module "ec2_instances" {
     backend  = module.security_group.backend_security_group_id
     database = module.security_group.database_security_group_id
   }
+}
+
+module "route_tables" {
+  source                 = "./modules/route_tables"
+  route_table_name       = "room2-project1-route_table"
+  vpc_id                 = module.vpc.vpc_id
+  gateway_id             = module.gateway.gateway_id
+  destination_cidr_block = var.destination_cidr_block
+  subnet_ids             = module.subnets.subnet_ids
 }

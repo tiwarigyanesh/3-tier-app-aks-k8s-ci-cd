@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-deployment
+  namespace: tawfeeq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+    spec:
+      containers:
+        - name: ui
+          image: arkhamian/basic3tier-ui:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: "/usr/share/nginx/html/configs/"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: ui-configmap
+            items:
+              - key: config.json
+                path: config.json
+

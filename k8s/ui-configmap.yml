@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ui-configmap
+  namespace: tawfeeq
+data:
+  config.json: |
+    {
+        "API_URL": "http://a960ead4fa3464cb0b5020685dba446f-1030866181.eu-north-1.elb.amazonaws.com/"
+    }

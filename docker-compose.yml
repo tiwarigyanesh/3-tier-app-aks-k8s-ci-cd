@@ -1,0 +1,41 @@
+---
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "admin123"
+      POSTGRES_DB: "basic3tier"
+    networks:
+      - my_network
+
+  api:
+    build:
+      context: ./api
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__Basic3Tier=Host=db;Port=5432;Database=basic3tier;Username=postgres;Password=admin123
+    ports:
+      - "7000:80"
+    networks:
+      - my_network
+    container_name: api
+
+  ui:
+    build:
+      context: ./ui
+    depends_on:
+      - api
+    ports:
+      - "5001:80"
+    networks:
+      - my_network
+    container_name: ui
+
+volumes:
+  db-data:
+
+networks:
+  my_network:
