@@ -26,8 +26,12 @@ jobs:
       with:
         dotnet-version: '6.0.x'
 
-    - name: Restore dependencies for API project
-      run: dotnet restore ./api/*
+    - name: Restore dependencies for API projects
+      run: |
+        dotnet restore ./api/Basic3Tier.Core/Basic3Tier.Core.csproj
+        dotnet restore ./api/Basic3Tier.Infrastructure/Basic3Tier.Infrastructure.csproj
+        dotnet restore ./api/Basic3TierAPI/Basic3TierAPI.csproj
+        dotnet restore ./api/Tests/Tests.csproj
 
     - name: Restore dependencies for UI project
       run: dotnet restore ./ui/*
