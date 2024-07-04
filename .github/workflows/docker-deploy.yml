@@ -38,9 +38,6 @@ jobs:
     - name: Restore dependencies for API Project
       run: dotnet restore ./api/Basic3TierAPI/Basic3TierAPI.csproj
 
-    - name: Restore dependencies for UI project
-      run: dotnet restore ./ui 
-
     - name: Build API Core
       run: dotnet build --configuration Release --no-restore ./api/Basic3Tier.Core/Basic3Tier.Core.csproj
 
