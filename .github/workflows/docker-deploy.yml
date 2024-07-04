@@ -170,26 +170,9 @@ jobs:
           networks:
             network_gyanesh:
           EOL
-
-          # Pull the latest images
-          echo "Pulling the latest images..."
-          sudo docker-compose pull
-          echo "Pull completed."
-
-          # Run Docker Compose
-          echo "Stopping existing containers..."
-          sudo docker-compose down
-          echo "Existing containers stopped."
-
+          
           echo "Starting new containers..."
-          sudo docker-compose up -d
+          sudo docker compose up -d
           echo "Containers started."
 
-          # Verify the containers are running
-          echo "Checking container status..."
-          sudo docker-compose ps
-
-          # Wait for services to be up
-          echo "Waiting for services to be up..."
-          sleep 30
         EOF
