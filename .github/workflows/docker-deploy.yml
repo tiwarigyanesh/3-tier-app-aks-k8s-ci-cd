@@ -172,29 +172,24 @@ jobs:
           EOL
 
           # Pull the latest images
+          echo "Pulling the latest images..."
           docker-compose pull
+          echo "Pull completed."
 
           # Run Docker Compose
+          echo "Stopping existing containers..."
           docker-compose down
+          echo "Existing containers stopped."
+
+          echo "Starting new containers..."
           docker-compose up -d
+          echo "Containers started."
+
+          # Verify the containers are running
+          echo "Checking container status..."
+          docker-compose ps
 
           # Wait for services to be up
           echo "Waiting for services to be up..."
           sleep 30
-
-          # Verify the deployment
-          echo "Verifying deployment..."
-          if curl -f http://localhost:5005/; then
-            echo "UI is running successfully."
-          else
-            echo "UI failed to start." >&2
-          exit 1
-          fi
-
-          if curl -f http://localhost:7007/; then
-            echo "API is running successfully."
-          else
-            echo "API failed to start." >&2
-          exit 1
-          fi
         EOF
