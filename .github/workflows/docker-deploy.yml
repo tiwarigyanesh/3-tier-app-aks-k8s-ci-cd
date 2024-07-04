@@ -47,9 +47,6 @@ jobs:
     - name: Build API Project
       run: dotnet build --configuration Release --no-restore ./api/Basic3TierAPI/Basic3TierAPI.csproj
 
-    - name: Build UI project
-      run: dotnet build --configuration Release --no-restore ./ui
-
     - name: Run tests for API project
       run: dotnet test --no-build --verbosity normal ./api
 
