@@ -26,6 +26,12 @@ jobs:
       with:
         dotnet-version: '6.0.x'
 
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'    
+
     - name: Clean up NuGet cache
       run: dotnet nuget locals all --clear
 
