@@ -126,10 +126,11 @@ jobs:
     - name: Deploy to EC2
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-
-          # Run Docker Compose
-          # Create docker-compose.yml
-          cat > docker-compose.yml <<EOL
+        mkdir -p gyanesh
+        cd gyanesh
+        # Run Docker Compose
+        # Create docker-compose.yml
+        cat > docker-compose.yml <<EOL
           version: '3.8'
           services:
             db:
@@ -171,8 +172,8 @@ jobs:
             network_gyanesh:
           EOL
           
-          echo "Starting new containers..."
-          sudo docker compose up -d
-          echo "Containers started."
+        echo "Starting new containers..."
+        sudo docker compose up -d
+        echo "Containers started."
 
         EOF
