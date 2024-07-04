@@ -170,12 +170,19 @@ jobs:
 
           networks:
             network_gyanesh:
-
-          EOL
           
+        EOL
+    
+        EOF          
+
+        # Run Docker Compose
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+        echo "Stopping existing containers..."
+        docker-compose down
+        echo "Existing containers stopped."
+
         echo "Starting new containers..."
-        sudo docker-compose up -d
-        echo "Containers started." 
-
-
+        docker-compose up -d
+        echo "Containers started."
+        
         EOF
