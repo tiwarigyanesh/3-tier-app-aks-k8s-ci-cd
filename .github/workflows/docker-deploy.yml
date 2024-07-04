@@ -175,26 +175,26 @@ jobs:
           docker-compose pull
 
           # Run Docker Compose
-        docker-compose down
-        docker-compose up -d
+          docker-compose down
+          docker-compose up -d
 
           # Wait for services to be up
-        echo "Waiting for services to be up..."
-        sleep 30
+          echo "Waiting for services to be up..."
+          sleep 30
 
-        # Verify the deployment
-        echo "Verifying deployment..."
-        if curl -f http://localhost:5005/; then
-          echo "UI is running successfully."
-        else
-          echo "UI failed to start." >&2
+          # Verify the deployment
+          echo "Verifying deployment..."
+          if curl -f http://localhost:5005/; then
+            echo "UI is running successfully."
+          else
+            echo "UI failed to start." >&2
           exit 1
-        fi
+          fi
 
-        if curl -f http://localhost:7007/; then
-          echo "API is running successfully."
-        else
-          echo "API failed to start." >&2
+          if curl -f http://localhost:7007/; then
+            echo "API is running successfully."
+          else
+            echo "API failed to start." >&2
           exit 1
-        fi
+          fi
         EOF
