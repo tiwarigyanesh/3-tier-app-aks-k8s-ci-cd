@@ -178,20 +178,20 @@ jobs:
         # Pull the latest images
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
           echo "Pulling the latest images..."
-          docker-compose pull
+          docker-compose pull || { echo 'Docker pull failed' ; exit 1; }
           echo "Pull completed."
-
+        
         EOF
 
         # Run Docker Compose
 
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
           echo "Stopping existing containers..."
-          docker-compose down
+          docker-compose down || { echo 'Docker down failed' ; exit 1; }
           echo "Existing containers stopped."
 
           echo "Starting new containers..."
-          docker-compose up -d
+          docker-compose up -d || { echo 'Docker up failed' ; exit 1; }
           echo "Containers started."
         
         EOF
