@@ -67,10 +67,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
       run: |
-        dotnet sonarscanner begin /k:"3-tier-ci-cd" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-        dotnet build ./api
-        dotnet build ./ui
-        dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"  
+        dotnet sonarscanner begin /k:"3-tier-ci-cd" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" 
+        dotnet build --no-incremental ./api/Basic3Tier.Core/Basic3Tier.Core.csproj
+        dotnet build --no-incremental ./api/Basic3Tier.Infrastructure/Basic3Tier.Infrastructure.csproj
+        dotnet build --no-incremental ./api/Basic3TierAPI/Basic3TierAPI.csproj
+        dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
   dockerize:
     needs: build-test-scan
