@@ -130,7 +130,7 @@ jobs:
         cd gyanesh
         # Run Docker Compose
         # Create docker-compose.yml
-        cat > docker-compose.yml <<EOL
+          cat > docker-compose.yml <<EOL
           version: '3.8'
           services:
             db:
@@ -170,10 +170,12 @@ jobs:
 
           networks:
             network_gyanesh:
+
           EOL
           
         echo "Starting new containers..."
-        sudo docker compose up -d
-        echo "Containers started."
+        sudo docker-compose up -d
+        echo "Containers started." 
+
 
         EOF
