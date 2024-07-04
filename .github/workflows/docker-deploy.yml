@@ -26,6 +26,9 @@ jobs:
       with:
         dotnet-version: '6.0.x'
 
+    - name: Clean up NuGet cache
+      run: dotnet nuget locals all --clear    
+
     - name: Build API Core
       run: dotnet build --configuration Release --no-restore ./api/Basic3Tier.Core/Basic3Tier.Core.csproj
 
