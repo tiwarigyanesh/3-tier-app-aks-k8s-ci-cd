@@ -27,16 +27,16 @@ jobs:
         dotnet-version: '6.0.x'
 
     - name: Restore dependencies for API Core
-      run: dotnet restore "./api/Basic3Tier.Core/Basic3Tier.Core.csproj"
+      run: dotnet restore -o "./api/Basic3Tier.Core/Basic3Tier.Core.csproj"
 
     - name: Restore dependencies for API Infrastructure
-      run: dotnet restore "./api/Basic3Tier.Infrastructure/Basic3Tier.Infrastructure.csproj"
+      run: dotnet restore -o "./api/Basic3Tier.Infrastructure/Basic3Tier.Infrastructure.csproj"
 
     - name: Restore dependencies for API Project
-      run: dotnet restore "./api/Basic3TierAPI/Basic3TierAPI.csproj"
+      run: dotnet restore -o "./api/Basic3TierAPI/Basic3TierAPI.csproj"
 
     - name: Restore dependencies for UI project
-      run: dotnet restore "./ui"
+      run: dotnet restore -o "./ui"
 
     - name: Build API project
       run: dotnet build --configuration Release --no-restore ./api
