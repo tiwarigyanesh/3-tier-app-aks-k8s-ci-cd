@@ -47,11 +47,15 @@ jobs:
     - name: Build API Project
       run: dotnet build --configuration Release --no-restore ./api/Basic3TierAPI/Basic3TierAPI.csproj
 
-    - name: Run tests for API project
-      run: dotnet test --no-build --verbosity normal ./api
+    - name: Run tests for API Core
+      run: dotnet test --no-build --verbosity normal ./api/Basic3Tier.Core/Basic3Tier.Core.csproj
 
-    - name: Run tests for UI project
-      run: dotnet test --no-build --verbosity normal ./ui
+    - name: Run tests for API Infrastructure
+      run: dotnet test --no-build --verbosity normal ./api/Basic3Tier.Infrastructure/Basic3Tier.Infrastructure.csproj
+
+    - name: Run tests for API Project
+      run: dotnet test --no-build --verbosity normal ./api/Basic3TierAPI/Basic3TierAPI.csproj
+
 
     - name: Set up SonarQube scanner
       run: |
