@@ -173,16 +173,25 @@ jobs:
           
         EOL
     
-        EOF          
+        EOF
+
+        # Pull the latest images
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+          echo "Pulling the latest images..."
+          docker-compose pull
+          echo "Pull completed."
+
+        EOF
 
         # Run Docker Compose
-        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-        echo "Stopping existing containers..."
-        docker-compose down
-        echo "Existing containers stopped."
 
-        echo "Starting new containers..."
-        docker-compose up -d
-        echo "Containers started."
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+          echo "Stopping existing containers..."
+          docker-compose down
+          echo "Existing containers stopped."
+
+          echo "Starting new containers..."
+          docker-compose up -d
+          echo "Containers started."
         
         EOF
