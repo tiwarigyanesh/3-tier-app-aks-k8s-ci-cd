@@ -191,18 +191,20 @@ jobs:
     
         EOF
 
-        # Pull the latest images
-        #ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-         # echo "Pulling the latest images..."
-         # docker-compose pull || { echo 'Docker pull failed' ; exit 1; }
-         # echo "Pull completed."
+        #  Pull the latest images
+        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+          echo "Pulling the latest images..."
+          cd gyanesh
+          docker-compose pull || { echo 'Docker pull failed' ; exit 1; }
+          echo "Pull completed."
         
-        #EOF
+        EOF
 
         # Run Docker Compose
 
         ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
           echo "Stopping existing containers..."
+          cd gyanesh
           docker-compose down || { echo 'Docker down failed' ; exit 1; }
           echo "Existing containers stopped."
 
