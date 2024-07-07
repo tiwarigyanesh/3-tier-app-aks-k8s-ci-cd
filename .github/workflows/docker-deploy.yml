@@ -124,52 +124,54 @@ jobs:
 
       - name: Create docker-compose file
         run: |
-          cat > docker-compose.yml <<EOL
-version: "3.8"
-services:
-  db:
-    image: postgres:latest
-    container_name: db_gyanesh
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "admin123"
-      POSTGRES_DB: "basic3tier"
-    networks:
-      - network_gyanesh
+          echo '
+          version: "3.8"
+          services:
+            db:
+              image: postgres:latest
+              container_name: db_gyanesh
+              environment:
+                POSTGRES_USER: "postgres"
+                POSTGRES_PASSWORD: "admin123"
+                POSTGRES_DB: "basic3tier"
+              networks:
+                - network_gyanesh
 
-  api:
-    image: gyaneshtiwari/3-tier-api:latest
-    depends_on:
-      - db
-    environment:
-      - ConnectionStrings__Basic3Tier=Host=db;Port=5432;Database=basic3tier;Username=postgres;Password=admin123
-    ports:
-      - "7007:80"
-    networks:
-      - network_gyanesh
-    container_name: api_gyanesh
+            api:
+              image: gyaneshtiwari/3-tier-api:latest
+              depends_on:
+                - db
+              environment:
+                - ConnectionStrings__Basic3Tier=Host=db;Port=5432;Database=basic3tier;Username=postgres;Password=admin123
+              ports:
+                - "7007:80"
+              networks:
+                - network_gyanesh
+              container_name: api_gyanesh
 
-  ui:
-    image: gyaneshtiwari/3-tier-ui:latest
-    depends_on:
-      - api
-    ports:
-      - "5005:80"
-    networks:
-      - network_gyanesh
-    container_name: ui_gyanesh
+            ui:
+              image: gyaneshtiwari/3-tier-ui:latest
+              depends_on:
+                - api
+              ports:
+                - "5005:80"
+              networks:
+                - network_gyanesh
+              container_name: ui_gyanesh
 
-volumes:
-  db-data:
+          volumes:
+            db-data:
 
-networks:
-  network_gyanesh:
-EOL
+          networks:
+            network_gyanesh:' > docker-compose.yml
+
+      - name: Copy docker-compose file to EC2
+        run: |
+          scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@${{ secrets.EC2_HOST }}:~/gyanesh/docker-compose.yml
 
       - name: Deploy to EC2
         run: |
-          scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@${{ secrets.EC2_HOST }}:~/gyanesh/docker-compose.yml
-          ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -o ServerAliveCountMax=120 ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             if ! command -v screen &> /dev/null; then
               echo "Screen is not installed. Installing screen..."
               sudo apt-get update
