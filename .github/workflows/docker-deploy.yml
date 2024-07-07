@@ -88,14 +88,14 @@ volumes:
 
 networks:
   network_gyanesh:
-EOL
+   EOL
 
-              # Pull the latest images
+              #Pull the latest images
               echo "Pulling the latest images..."
               docker-compose pull || { echo 'Docker pull failed' ; exit 1; }
               echo "Pull completed."
 
-              # Run Docker Compose
+              #Run Docker Compose
               echo "Stopping existing containers..."
               docker-compose down || { echo 'Docker down failed' ; exit 1; }
               echo "Existing containers stopped."
