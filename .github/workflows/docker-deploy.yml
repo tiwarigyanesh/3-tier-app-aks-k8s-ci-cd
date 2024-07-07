@@ -172,15 +172,18 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+            echo "Ensuring screen is installed..."
             if ! command -v screen &> /dev/null; then
               echo "Screen is not installed. Installing screen..."
               sudo apt-get update
               sudo apt-get install -y screen
             fi
 
+            echo "Starting screen session for deployment..."
             screen -S deploy_session -d -m bash -c '
               set -e
-
+              echo "Ensuring Docker is installed..."
               # Ensure Docker and Docker Compose are installed
               if ! command -v docker &> /dev/null; then
                 echo "Docker is not installed. Installing Docker..."
@@ -188,6 +191,7 @@ jobs:
                 sudo apt-get install -y docker.io
               fi
 
+              echo "Ensuring Docker Compose is installed..."
               if ! command -v docker-compose &> /dev/null; then
                 echo "Docker Compose is not installed. Installing Docker Compose..."
                 sudo curl -L "https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -208,11 +212,13 @@ jobs:
               echo "Starting new containers..."
               docker-compose up -d || { echo 'Docker up failed' ; exit 1; }
               echo "Containers started."
+              echo "Listing all running Docker containers..." > docker_status.log
+              docker ps >> docker_status.log
             '
           EOF
-      - name: Verify Docker containers on EC2
+      - name: Fetch Docker logs from EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-            echo "Listing all running Docker containers..."
-            docker ps
-          EOF
+          scp -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }}:~/gyanesh/docker_status.log docker_status.log
+
+      - name: Print Docker logs
+        run: cat docker_status.log
