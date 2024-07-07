@@ -154,7 +154,8 @@ jobs:
             cd gyanesh
 
             # Create docker-compose.yml
-            cat > docker-compose.yml <<EOL       
+            cat > docker-compose.yml <<EOL
+---
   version: "3.8"
   services:
     db:
@@ -188,7 +189,6 @@ jobs:
       networks:
         - network_gyanesh
       container_name: ui_gyanesh
-
   volumes:
     db-data:
 
@@ -206,7 +206,7 @@ jobs:
           echo "Pull completed."
         
         #EOF
-
+ 
         # Run Docker Compose
 
         #ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
