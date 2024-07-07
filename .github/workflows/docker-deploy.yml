@@ -152,7 +152,7 @@ jobs:
               cd gyanesh
 
               # Create docker-compose.yml
-              cat > docker-compose.yml <<'EOL'
+              cat > docker-compose.yml <<EOL
 version: "3.8"
 services:
   db:
