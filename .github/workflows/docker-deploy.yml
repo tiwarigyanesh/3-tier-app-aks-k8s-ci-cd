@@ -155,7 +155,6 @@ jobs:
 
             # Create docker-compose.yml
             cat > docker-compose.yml <<EOL
----
   version: "3.8"
   services:
     db:
