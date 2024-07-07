@@ -210,3 +210,9 @@ jobs:
               echo "Containers started."
             '
           EOF
+      - name: Verify Docker containers on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            echo "Listing all running Docker containers..."
+            docker ps
+          EOF
