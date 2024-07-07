@@ -193,7 +193,6 @@ volumes:
 networks:
   network_gyanesh:
               EOL
-
               # Pull the latest images
               echo "Pulling the latest images..."
               docker-compose pull || { echo 'Docker pull failed' ; exit 1; }
