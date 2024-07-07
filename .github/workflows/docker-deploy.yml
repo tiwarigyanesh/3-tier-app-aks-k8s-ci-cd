@@ -169,10 +169,11 @@ jobs:
         run: |
           scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@${{ secrets.EC2_HOST }}:~/gyanesh/docker-compose.yml
 
-      - name: Deploy to EC2
+      - name: Ensure remote directory exists and deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             set -e
+            mkdir -p ~/gyanesh
             echo "Ensuring screen is installed..."
             if ! command -v screen &> /dev/null; then
               echo "Screen is not installed. Installing screen..."
@@ -183,7 +184,7 @@ jobs:
             echo "Starting screen session for deployment..."
             screen -S deploy_session -d -m bash -c '
               set -e
-              LOG_FILE="~/gyanesh/deployment.log"
+              LOG_FILE="/home/ubuntu/gyanesh/deployment.log"
               {
                 echo "Ensuring Docker is installed..."
                 if ! command -v docker &> /dev/null; then
