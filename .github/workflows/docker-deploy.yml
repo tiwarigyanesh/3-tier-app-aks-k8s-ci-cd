@@ -183,42 +183,44 @@ jobs:
             echo "Starting screen session for deployment..."
             screen -S deploy_session -d -m bash -c '
               set -e
-              echo "Ensuring Docker is installed..."
-              # Ensure Docker and Docker Compose are installed
-              if ! command -v docker &> /dev/null; then
-                echo "Docker is not installed. Installing Docker..."
-                sudo apt-get update
-                sudo apt-get install -y docker.io
-              fi
+              LOG_FILE="~/gyanesh/deployment.log"
+              {
+                echo "Ensuring Docker is installed..."
+                if ! command -v docker &> /dev/null; then
+                  echo "Docker is not installed. Installing Docker..."
+                  sudo apt-get update
+                  sudo apt-get install -y docker.io
+                fi
 
-              echo "Ensuring Docker Compose is installed..."
-              if ! command -v docker-compose &> /dev/null; then
-                echo "Docker Compose is not installed. Installing Docker Compose..."
-                sudo curl -L "https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-                sudo chmod +x /usr/local/bin/docker-compose
-              fi  
+                echo "Ensuring Docker Compose is installed..."
+                if ! command -v docker-compose &> /dev/null; then
+                  echo "Docker Compose is not installed. Installing Docker Compose..."
+                  sudo curl -L "https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                  sudo chmod +x /usr/local/bin/docker-compose
+                fi  
 
-              # Pull the latest images
-              echo "Pulling the latest images..."
-              cd ~/gyanesh
-              docker-compose pull || { echo 'Docker pull failed' ; exit 1; }
-              echo "Pull completed."
+                echo "Pulling the latest images..."
+                cd ~/gyanesh
+                docker-compose pull || { echo "Docker pull failed"; exit 1; }
+                echo "Pull completed."
 
-              # Run Docker Compose
-              echo "Stopping existing containers..."
-              docker-compose down || { echo 'Docker down failed' ; exit 1; }
-              echo "Existing containers stopped."
+                echo "Stopping existing containers..."
+                docker-compose down || { echo "Docker down failed"; exit 1; }
+                echo "Existing containers stopped."
 
-              echo "Starting new containers..."
-              docker-compose up -d || { echo 'Docker up failed' ; exit 1; }
-              echo "Containers started."
-              echo "Listing all running Docker containers..." > docker_status.log
-              docker ps >> docker_status.log
+                echo "Starting new containers..."
+                docker-compose up -d || { echo "Docker up failed"; exit 1; }
+                echo "Containers started."
+
+                echo "Listing all running Docker containers..."
+                docker ps
+              } &> $LOG_FILE
             '
           EOF
-      - name: Fetch Docker logs from EC2
-        run: |
-          scp -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }}:~/gyanesh/docker_status.log docker_status.log
 
-      - name: Print Docker logs
-        run: cat docker_status.log
+      - name: Fetch Deployment logs from EC2
+        run: |
+          scp -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }}:~/gyanesh/deployment.log deployment.log
+
+      - name: Print Deployment logs
+        run: cat deployment.log
