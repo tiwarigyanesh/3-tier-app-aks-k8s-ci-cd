@@ -162,7 +162,7 @@ jobs:
               container_name: ui_gyanesh
 
           volumes:
-            db-data:
+            db_data:
 
           networks:
             network_gyanesh:' > docker-compose.yml
