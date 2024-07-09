@@ -138,8 +138,6 @@ jobs:
                 - network_gyanesh
               volumes:
                 - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-              ports:
-                - "5432:5432"  
 
             api:
               image: gyaneshtiwari/3-tier-api:latest
