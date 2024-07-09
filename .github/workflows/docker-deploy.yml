@@ -137,7 +137,7 @@ jobs:
               networks:
                 - network_gyanesh
               volumes:
-                - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+                - db_data:/var/lib/postgresql/data
 
             api:
               image: gyaneshtiwari/3-tier-api:latest
