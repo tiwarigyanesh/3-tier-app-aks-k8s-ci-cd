@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: gyanesh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      name: frontend
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: gyaneshtiwari/3-tier-ui:latest
+        ports:
+          - containerPort: 80
+        volumeMounts:
+        - name: config
+          mountPath: "usr/share/nginx/html/configs/"
+          readOnly: true  
+      volumes:
+      - name: config
+        configMap:
+          name: config-map
+          items:
+            - key: config.json
+              path: config.json

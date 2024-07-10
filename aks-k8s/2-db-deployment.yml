@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database-deployment
+  namespace: gyanesh
+  labels:
+    app: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      name: database
+      labels:
+        app: database
+    spec:
+      containers:
+        - name: database
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: admin123
+            - name: POSTGRES_DB
+              value: basic3tier
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgres/data
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: pvc    

@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-map
+  namespace: gyanesh
+data:
+  config.json: |
+   {
+     "API_URL": "http://172.214.63.37/"  
+   }
+  appsettings.json: |
+   {
+     "API_URL": "http://48.217.12.164/"  
+   } 
